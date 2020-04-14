@@ -33,6 +33,9 @@ const Header = ( { siteTitle } ) => (
       <Typography variant="body2">
         <Link to="/" style={ styles.link }>MACROS APP</Link>
       </Typography>
+      <Typography variant="body2">
+        <Link to="/" style={ styles.link }>CONTACT</Link>
+      </Typography>
     </div>
   </AppBar>
 )
