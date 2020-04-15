@@ -7,6 +7,7 @@ import { colors } from '../styles/theme'
 const useStyles = makeStyles( () => ( {
   section: {
     backgroundColor: colors.black,
+    borderTop: `1px solid ${ colors.black }`,
   },
   text: {
     color: '#fff',

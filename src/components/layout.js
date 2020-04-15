@@ -7,7 +7,7 @@ import { theme } from '../styles/theme'
 
 import Header from './Header'
 import './layout.css'
-import Footer from "./Footer"
+import Footer from './Footer'
 
 const styles = {
   container: {
@@ -15,7 +15,7 @@ const styles = {
     maxWidth: 1008,
     padding: '1rem',
   },
-};
+}
 
 const Layout = ( { children, style } ) => {
   const data = useStaticQuery( graphql`

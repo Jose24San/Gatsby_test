@@ -1,7 +1,7 @@
 import React from 'react'
 import Typography from '@material-ui/core/Typography'
-import PageWidth from "./PageWidth"
-import { colors } from "../styles/theme"
+import PageWidth from './PageWidth'
+import { colors } from '../styles/theme'
 
 const styles = {
   container: {
