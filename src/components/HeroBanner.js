@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import PageWidth from './PageWidth'
@@ -30,24 +31,29 @@ const useStyles = makeStyles( () => ( {
   },
 } ) )
 
-const HeroBanner = () => {
+const HeroBanner = ( { title, subtitle } ) => {
   const classes = useStyles()
 
   return (
     <section className={ classes.section }>
       <PageWidth className={ classes.container }>
         <Typography className={ `${ classes.text } ${ classes.title }` } variant="h1">
-          Fitomation
+          { title }
         </Typography>
         <Typography
           className={ `${ classes.text } ${ classes.subTitle }` }
           variant="h2"
         >
-          Automate Fitness
+          { subtitle }
         </Typography>
       </PageWidth>
     </section>
   )
+}
+
+HeroBanner.propTypes = {
+  title: PropTypes.string.isRequired,
+  subtitle: PropTypes.string,
 }
 
 export default HeroBanner

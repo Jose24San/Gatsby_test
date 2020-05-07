@@ -13,7 +13,7 @@ import { colors } from '../styles/theme'
 
 const useStyles = makeStyles( theme => ( {
   linkContainer: {
-    padding: 20,
+    padding: '10px 20px',
   },
   link: {
     color: '#fff',
@@ -46,8 +46,6 @@ const Header = ( { siteTitle } ) => {
   const theme = useTheme()
   const isSmallViewport = useMediaQuery( theme.breakpoints.down( 'xs' ) )
   const classes = useStyles()
-
-  console.warn( 'is small view port', isSmallViewport )
 
   const handleClick = ( { currentTarget } ) => setAnchorEl( currentTarget )
   const handleClose = () => setAnchorEl( null )
@@ -84,7 +82,7 @@ const Header = ( { siteTitle } ) => {
                   <Link to="/" className={ classes.link }>HOME</Link>
                 </Typography>
                 <Typography variant="body2" className={ classes.linkContainer }>
-                  <Link to="/" className={ classes.link }>NUTRITION</Link>
+                  <Link to="/nutrition" className={ classes.link }>NUTRITION</Link>
                 </Typography>
                 <Typography variant="body2" className={ classes.linkContainer }>
                   <Link to="/" className={ classes.link }>WORKOUTS</Link>

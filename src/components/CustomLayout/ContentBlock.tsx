@@ -1,7 +1,8 @@
 import React from 'react'
 import { Typography, Grid, Button } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { colors } from '../styles/theme'
+import { navigate } from 'gatsby'
+import { colors } from '../../styles/theme'
 
 const useStyles = makeStyles( theme => ( {
   widthContainer: {
@@ -48,8 +49,14 @@ const useStyles = makeStyles( theme => ( {
   },
 } ) )
 
-const ContentBlock = ( { image, title, description, buttonText, reverse } ) => {
+const ContentBlock = ( { image, title, description, buttonText, link, reverse } ) => {
   const classes = useStyles()
+
+  const navigateToLink = () => {
+    if ( link ) {
+      navigate( link );
+    }
+  };
 
   const ImageBlock = (
     <Grid className={ classes.imageOuterContainer } item xs={ 12 } sm={ 6 }>
@@ -67,7 +74,12 @@ const ContentBlock = ( { image, title, description, buttonText, reverse } ) => {
       <Typography variant="body1" className={ classes.description }>
         { description }
       </Typography>
-      <Button className={ classes.button } variant="contained" color="secondary">
+      <Button
+        onClick={ navigateToLink }
+        className={ classes.button }
+        variant="contained"
+        color="secondary"
+      >
         { buttonText }
       </Button>
     </Grid>
@@ -93,5 +105,13 @@ const ContentBlock = ( { image, title, description, buttonText, reverse } ) => {
     </Grid>
   )
 }
+
+type Props = {
+  image: any,
+  title: string,
+  description: string,
+  reverse?: boolean,
+  link?: string,
+};
 
 export default ContentBlock

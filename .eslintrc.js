@@ -1,7 +1,8 @@
 module.exports = {
   env: {
     browser: true,
-    es6: true
+    es6: true,
+    jest: true,
   },
   extends: [
     'plugin:react/recommended',
@@ -52,6 +53,8 @@ module.exports = {
     'no-shadow': 'warn',
     'lines-between-class-members': 'off',
     'no-underscore-dangle': 'off',
+    'semi': 'off',
+    'space-before-function-paren': 'off',
 
 
     // react specific rules

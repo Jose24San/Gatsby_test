@@ -29,23 +29,21 @@ const Layout = ( { children, style } ) => {
   ` )
 
   return (
-    <div>
-      <ThemeProvider theme={ theme }>
-        <Header siteTitle={ data.site.siteMetadata.title }/>
-        <HeroBanner />
-        <div style={ { ...styles.container, ...style } }>
-          <main>{ children }</main>
+    <ThemeProvider theme={ theme }>
+      <Header siteTitle={ data.site.siteMetadata.title }/>
+      <HeroBanner />
+      <div style={ { ...styles.container, ...style } }>
+        <main>{ children }</main>
 
 
-          {/*<footer>*/}
-          {/*  © { new Date().getFullYear() }, Built with*/}
-          {/*  { ' ' }*/}
-          {/*  <a href="https://www.gatsbyjs.org">Gatsby</a>*/}
-          {/*</footer>*/}
-        </div>
-        <Footer />
-      </ThemeProvider>
-    </div>
+        {/*<footer>*/}
+        {/*  © { new Date().getFullYear() }, Built with*/}
+        {/*  { ' ' }*/}
+        {/*  <a href="https://www.gatsbyjs.org">Gatsby</a>*/}
+        {/*</footer>*/}
+      </div>
+      <Footer />
+    </ThemeProvider>
   )
 }
 

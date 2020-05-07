@@ -14,10 +14,10 @@ import Img from 'gatsby-image'
  * - `useStaticQuery`: https://www.gatsbyjs.org/docs/use-static-query/
  */
 
-const MealIconImage = ( { className, style } ) => {
+const Energy = ( { className, style } ) => {
   const data = useStaticQuery( graphql`
     query {
-      placeholderImage: file(relativePath: { eq: "meal-icon.jpg" }) {
+      placeholderImage: file(relativePath: { eq: "energy.jpg" }) {
         childImageSharp {
           fluid(maxWidth: 300) {
             ...GatsbyImageSharpFluid
@@ -36,9 +36,9 @@ const MealIconImage = ( { className, style } ) => {
   )
 }
 
-MealIconImage.propTypes = {
+Energy.propTypes = {
   className: PropTypes.string,
   style: PropTypes.object,
 }
 
-export default MealIconImage
+export default Energy
