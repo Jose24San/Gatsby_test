@@ -4,10 +4,12 @@ import { makeStyles, useTheme } from '@material-ui/core/styles'
 import SEO from '../components/seo'
 import MealIconImage from '../images/MealIconImage'
 import ContentBlock from '../components/CustomLayout/ContentBlock'
-import InProgressImage from '../images/InProgressImage'
 import useMediaQuery from '@material-ui/core/useMediaQuery/useMediaQuery'
 import ContactUs from '../components/ContactUs'
 import SingleColumn from '../layouts/SingleColumn'
+import Dumbbell from '../images/Dumbbell'
+import { useDispatch } from 'react-redux'
+import { openDialog } from '../redux/reducers/dialogs'
 
 
 const useStyles = makeStyles( theme => ( {
@@ -18,6 +20,7 @@ const useStyles = makeStyles( theme => ( {
 
 const IndexPage = () => {
   const classes = useStyles()
+  const dispatch = useDispatch();
   const theme = useTheme()
   const matches = useMediaQuery( theme.breakpoints.up( 'sm' ) )
 
@@ -35,13 +38,15 @@ const IndexPage = () => {
 
       <ContentBlock
         reverse={ matches }
-        image={ <InProgressImage className={ classes.image }/> }
+        image={ <Dumbbell className={ classes.image } /> }
         title="Workout Generator"
-        description="Our workout generator is still a work in a progress but check back later to see if we are finished with it. It will use advanced algorithms to determine the most effective way to train your body for your goals"
-        buttonText="Waiting List"
+        description="Generate custom workout plan tailored to your goals and needs using advanced algorithms."
+        buttonText="Start Planning"
+        onClick={ () => dispatch( openDialog( 'subscribe' ) ) }
       />
 
       <ContactUs/>
+
     </SingleColumn>
   )
 }

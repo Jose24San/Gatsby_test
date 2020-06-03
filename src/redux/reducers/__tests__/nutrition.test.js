@@ -184,7 +184,7 @@ describe( 'nutrition reducer tests', () => {
         goal: 'Lose Weight',
         dietLength: '12 Weeks',
         workoutDays: [ 'Tuesday', 'Thursday', 'Saturday', 'Sunday' ],
-        targetWeeklyWeightLoss: 1,
+        targetWeeklyWeightChange: 1,
       } );
 
       const expectedState = {
@@ -209,7 +209,7 @@ describe( 'nutrition reducer tests', () => {
           goal: 'Lose Weight',
           dietLength: 12,
           workoutDays: [ 'Tuesday', 'Thursday', 'Saturday', 'Sunday' ],
-          targetWeeklyWeightLoss: 1,
+          targetWeeklyWeightChange: 1,
           days: [
             {
               day: 'Monday',
@@ -380,8 +380,8 @@ describe( 'nutrition reducer tests', () => {
               targetCalories: 1988,
               macros: {
                 protein: 140,
-                carbs: 159,
-                fats: 88,
+                carbs: 162,
+                fats: 87,
               },
               override: undefined,
             },
@@ -395,8 +395,8 @@ describe( 'nutrition reducer tests', () => {
               targetCalories: 2248,
               macros: {
                 protein: 140,
-                carbs: 200,
-                fats: 99,
+                carbs: 227,
+                fats: 87,
               },
               override: undefined,
             },
@@ -409,8 +409,8 @@ describe( 'nutrition reducer tests', () => {
               targetCalories: 1988,
               macros: {
                 protein: 140,
-                carbs: 159,
-                fats: 88,
+                carbs: 162,
+                fats: 87,
               },
               override: undefined,
             },
@@ -424,8 +424,8 @@ describe( 'nutrition reducer tests', () => {
               targetCalories: 2248,
               macros: {
                 protein: 140,
-                carbs: 200,
-                fats: 99,
+                carbs: 227,
+                fats: 87,
               },
               override: undefined,
             },
@@ -438,8 +438,8 @@ describe( 'nutrition reducer tests', () => {
               targetCalories: 1988,
               macros: {
                 protein: 140,
-                carbs: 159,
-                fats: 88,
+                carbs: 162,
+                fats: 87,
               },
               override: undefined,
             },
@@ -453,8 +453,8 @@ describe( 'nutrition reducer tests', () => {
               targetCalories: 2248,
               macros: {
                 protein: 140,
-                carbs: 200,
-                fats: 99,
+                carbs: 227,
+                fats: 87,
               },
               override: undefined,
             },
@@ -468,8 +468,8 @@ describe( 'nutrition reducer tests', () => {
               targetCalories: 2248,
               macros: {
                 protein: 140,
-                carbs: 200,
-                fats: 99,
+                carbs: 227,
+                fats: 87,
               },
               override: undefined,
             },
@@ -480,7 +480,164 @@ describe( 'nutrition reducer tests', () => {
       expect( nutritionReducer( previousState, action ) )
         .toEqual( expectedState )
 
-    } )
+    } );
+
+    it( 'should handle creating calorie plan for Weight Gain scenario', () => {
+
+      const previousState = {
+        'userDetails': {
+          'gender': 'Male',
+          'age': 27,
+          'weight': 174,
+          'height': {
+            'feet': 5,
+            'inches': 8,
+            'centimeters': '',
+          },
+          'bodyFat': '',
+        },
+        'calorieRequirements': {
+          'formula': 'Mifflin-St Jeor',
+          'maintenance': 1988,
+          'lightWorkout': 2248,
+          'hardWorkout': 2594,
+        },
+      };
+
+      const action = createNutritionNumbers( {
+        goal: 'Gain Weight',
+        dietLength: '12 Weeks',
+        workoutDays: [ 'Tuesday', 'Thursday', 'Saturday', 'Sunday' ],
+        targetWeeklyWeightChange: .44,
+      } );
+
+      const expectedState = {
+        'userDetails': {
+          'gender': 'Male',
+          'age': 27,
+          'weight': 174, // .44 lbs to .87 lbs
+          'height': {
+            'feet': 5,
+            'inches': 8,
+            'centimeters': '',
+          },
+          'bodyFat': '',
+        },
+        'calorieRequirements': {
+          'formula': 'Mifflin-St Jeor',
+          'maintenance': 1988,
+          'lightWorkout': 2248,
+          'hardWorkout': 2594,
+        },
+        weeklyTargets: {
+          goal: 'Gain Weight',
+          dietLength: 12,
+          targetWeeklyWeightChange: .44,
+          workoutDays: [ 'Tuesday', 'Thursday', 'Saturday', 'Sunday' ],
+          days: [
+            {
+              day: 'Monday',
+              workout: false,
+              calorieOptions: [
+                { value: 'maintenance', label: 'Maintenance', selected: true },
+              ],
+              targetCalories: 2208,
+              macros: {
+                protein: 174,
+                carbs: 183,
+                fats: 87,
+              },
+            },
+            {
+              day: 'Tuesday',
+              workout: true,
+              calorieOptions: [
+                { value: 'lightWorkout', label: 'Light Workout', selected: true },
+                { value: 'hardWorkout', label: 'Hard Workout' },
+              ],
+              targetCalories: 2468,
+              macros: {
+                protein: 174,
+                carbs: 248,
+                fats: 87,
+              },
+            },
+            {
+              day: 'Wednesday',
+              workout: false,
+              calorieOptions: [
+                { value: 'maintenance', label: 'Maintenance', selected: true },
+              ],
+              targetCalories: 2208,
+              macros: {
+                protein: 174,
+                carbs: 183,
+                fats: 87,
+              },
+            },
+            {
+              day: 'Thursday',
+              workout: true,
+              calorieOptions: [
+                { value: 'lightWorkout', label: 'Light Workout', selected: true },
+                { value: 'hardWorkout', label: 'Hard Workout' },
+              ],
+              targetCalories: 2468,
+              macros: {
+                protein: 174,
+                carbs: 248,
+                fats: 87,
+              },
+            },
+            {
+              day: 'Friday',
+              workout: false,
+              calorieOptions: [
+                { value: 'maintenance', label: 'Maintenance', selected: true },
+              ],
+              targetCalories: 2208,
+              macros: {
+                protein: 174,
+                carbs: 183,
+                fats: 87,
+              },
+            },
+            {
+              day: 'Saturday',
+              workout: true,
+              calorieOptions: [
+                { value: 'lightWorkout', label: 'Light Workout', selected: true },
+                { value: 'hardWorkout', label: 'Hard Workout' },
+              ],
+              targetCalories: 2468,
+              macros: {
+                protein: 174,
+                carbs: 248,
+                fats: 87,
+              },
+            },
+            {
+              day: 'Sunday',
+              workout: true,
+              calorieOptions: [
+                { value: 'lightWorkout', label: 'Light Workout', selected: true },
+                { value: 'hardWorkout', label: 'Hard Workout' },
+              ],
+              targetCalories: 2468,
+              macros: {
+                protein: 174,
+                carbs: 248,
+                fats: 87,
+              },
+            },
+          ]
+        },
+      };
+
+      expect( nutritionReducer( previousState, action ) )
+        .toEqual( expectedState )
+
+    } );
 
   } );
 
@@ -540,7 +697,7 @@ describe( 'nutrition reducer tests', () => {
           goal: 'Lose Weight',
           dietLength: 12,
           workoutDays: [ 'Tuesday', 'Thursday', 'Saturday', 'Sunday' ],
-          targetWeeklyWeightLoss: 1,
+          targetWeeklyWeightChange: 1,
           days: [
             {
               day: 'Monday',
@@ -675,7 +832,7 @@ describe( 'nutrition reducer tests', () => {
           goal: 'Lose Weight',
           dietLength: 12,
           workoutDays: [ 'Tuesday', 'Thursday', 'Saturday', 'Sunday' ],
-          targetWeeklyWeightLoss: 1,
+          targetWeeklyWeightChange: 1,
           days: [
             {
               day: 'Monday',
@@ -957,7 +1114,6 @@ describe( 'nutrition reducer tests', () => {
                 carbs: 159,
                 fats: 88,
               },
-              override: undefined,
             },
             {
               day: 'Tuesday',
@@ -969,10 +1125,9 @@ describe( 'nutrition reducer tests', () => {
               targetCalories: 2594,
               macros: {
                 protein: 140,
-                carbs: 250,
-                fats: 115,
+                carbs: 313,
+                fats: 87,
               },
-              override: undefined,
             },
             {
               day: 'Wednesday',
@@ -986,7 +1141,6 @@ describe( 'nutrition reducer tests', () => {
                 carbs: 159,
                 fats: 88,
               },
-              override: undefined,
             },
             {
               day: 'Thursday',
@@ -1001,7 +1155,6 @@ describe( 'nutrition reducer tests', () => {
                 carbs: 200,
                 fats: 99,
               },
-              override: undefined,
             },
             {
               day: 'Friday',
@@ -1015,7 +1168,6 @@ describe( 'nutrition reducer tests', () => {
                 carbs: 159,
                 fats: 88,
               },
-              override: undefined,
             },
             {
               day: 'Saturday',
@@ -1030,7 +1182,6 @@ describe( 'nutrition reducer tests', () => {
                 carbs: 200,
                 fats: 99,
               },
-              override: undefined,
             },
             {
               day: 'Sunday',
@@ -1045,7 +1196,6 @@ describe( 'nutrition reducer tests', () => {
                 carbs: 200,
                 fats: 99,
               },
-              override: undefined,
             },
           ]
         },
@@ -1056,6 +1206,263 @@ describe( 'nutrition reducer tests', () => {
 
     } );
 
+    it( 'should handle overriding the maintenance calories for a Gain Weight scenario', () => {
+
+      const previousState = {
+        'userDetails': {
+          'gender': 'Male',
+          'age': 27,
+          'weight': 174, // .44 lbs to .87 lbs
+          'height': {
+            'feet': 5,
+            'inches': 8,
+            'centimeters': '',
+          },
+          'bodyFat': '',
+        },
+        'calorieRequirements': {
+          'formula': 'Mifflin-St Jeor',
+          'maintenance': 1988,
+          'lightWorkout': 2248,
+          'hardWorkout': 2594,
+        },
+        weeklyTargets: {
+          goal: 'Gain Weight',
+          dietLength: 12,
+          targetWeeklyWeightChange: .44,
+          workoutDays: [ 'Tuesday', 'Thursday', 'Saturday', 'Sunday' ],
+          days: [
+            {
+              day: 'Monday',
+              workout: false,
+              calorieOptions: [
+                { value: 'maintenance', label: 'Maintenance', selected: true },
+              ],
+              targetCalories: 2208,
+              macros: {
+                protein: 174,
+                carbs: 183,
+                fats: 87,
+              },
+            },
+            {
+              day: 'Tuesday',
+              workout: true,
+              calorieOptions: [
+                { value: 'lightWorkout', label: 'Light Workout', selected: true },
+                { value: 'hardWorkout', label: 'Hard Workout' },
+              ],
+              targetCalories: 2468,
+              macros: {
+                protein: 174,
+                carbs: 248,
+                fats: 87,
+              },
+            },
+            {
+              day: 'Wednesday',
+              workout: false,
+              calorieOptions: [
+                { value: 'maintenance', label: 'Maintenance', selected: true },
+              ],
+              targetCalories: 2208,
+              macros: {
+                protein: 174,
+                carbs: 183,
+                fats: 87,
+              },
+            },
+            {
+              day: 'Thursday',
+              workout: true,
+              calorieOptions: [
+                { value: 'lightWorkout', label: 'Light Workout', selected: true },
+                { value: 'hardWorkout', label: 'Hard Workout' },
+              ],
+              targetCalories: 2468,
+              macros: {
+                protein: 174,
+                carbs: 248,
+                fats: 87,
+              },
+            },
+            {
+              day: 'Friday',
+              workout: false,
+              calorieOptions: [
+                { value: 'maintenance', label: 'Maintenance', selected: true },
+              ],
+              targetCalories: 2208,
+              macros: {
+                protein: 174,
+                carbs: 183,
+                fats: 87,
+              },
+            },
+            {
+              day: 'Saturday',
+              workout: true,
+              calorieOptions: [
+                { value: 'lightWorkout', label: 'Light Workout', selected: true },
+                { value: 'hardWorkout', label: 'Hard Workout' },
+              ],
+              targetCalories: 2468,
+              macros: {
+                protein: 174,
+                carbs: 248,
+                fats: 87,
+              },
+            },
+            {
+              day: 'Sunday',
+              workout: true,
+              calorieOptions: [
+                { value: 'lightWorkout', label: 'Light Workout', selected: true },
+                { value: 'hardWorkout', label: 'Hard Workout' },
+              ],
+              targetCalories: 2468,
+              macros: {
+                protein: 174,
+                carbs: 248,
+                fats: 87,
+              },
+            },
+          ]
+        },
+      };
+
+      const action = setMaintenanceCalories( {
+        day: 'Tuesday',
+        label: 'hardWorkout',
+      } );
+
+      const expectedState = {
+        'userDetails': {
+          'gender': 'Male',
+          'age': 27,
+          'weight': 174, // .44 lbs to .87 lbs
+          'height': {
+            'feet': 5,
+            'inches': 8,
+            'centimeters': '',
+          },
+          'bodyFat': '',
+        },
+        'calorieRequirements': {
+          'formula': 'Mifflin-St Jeor',
+          'maintenance': 1988,
+          'lightWorkout': 2248,
+          'hardWorkout': 2594,
+        },
+        weeklyTargets: {
+          goal: 'Gain Weight',
+          dietLength: 12,
+          targetWeeklyWeightChange: .44,
+          workoutDays: [ 'Tuesday', 'Thursday', 'Saturday', 'Sunday' ],
+          days: [
+            {
+              day: 'Monday',
+              workout: false,
+              calorieOptions: [
+                { value: 'maintenance', label: 'Maintenance', selected: true },
+              ],
+              targetCalories: 2208,
+              macros: {
+                protein: 174,
+                carbs: 183,
+                fats: 87,
+              },
+            },
+            {
+              day: 'Tuesday',
+              workout: true,
+              calorieOptions: [
+                { value: 'lightWorkout', label: 'Light Workout' },
+                { value: 'hardWorkout', label: 'Hard Workout', selected: true },
+              ],
+              targetCalories: 2814,
+              macros: {
+                protein: 174,
+                carbs: 334,
+                fats: 87,
+              },
+            },
+            {
+              day: 'Wednesday',
+              workout: false,
+              calorieOptions: [
+                { value: 'maintenance', label: 'Maintenance', selected: true },
+              ],
+              targetCalories: 2208,
+              macros: {
+                protein: 174,
+                carbs: 183,
+                fats: 87,
+              },
+            },
+            {
+              day: 'Thursday',
+              workout: true,
+              calorieOptions: [
+                { value: 'lightWorkout', label: 'Light Workout', selected: true },
+                { value: 'hardWorkout', label: 'Hard Workout' },
+              ],
+              targetCalories: 2468,
+              macros: {
+                protein: 174,
+                carbs: 248,
+                fats: 87,
+              },
+            },
+            {
+              day: 'Friday',
+              workout: false,
+              calorieOptions: [
+                { value: 'maintenance', label: 'Maintenance', selected: true },
+              ],
+              targetCalories: 2208,
+              macros: {
+                protein: 174,
+                carbs: 183,
+                fats: 87,
+              },
+            },
+            {
+              day: 'Saturday',
+              workout: true,
+              calorieOptions: [
+                { value: 'lightWorkout', label: 'Light Workout', selected: true },
+                { value: 'hardWorkout', label: 'Hard Workout' },
+              ],
+              targetCalories: 2468,
+              macros: {
+                protein: 174,
+                carbs: 248,
+                fats: 87,
+              },
+            },
+            {
+              day: 'Sunday',
+              workout: true,
+              calorieOptions: [
+                { value: 'lightWorkout', label: 'Light Workout', selected: true },
+                { value: 'hardWorkout', label: 'Hard Workout' },
+              ],
+              targetCalories: 2468,
+              macros: {
+                protein: 174,
+                carbs: 248,
+                fats: 87,
+              },
+            },
+          ]
+        },
+      };
+
+      expect( nutritionReducer( previousState, action ) )
+        .toEqual( expectedState );
+
+    } );
 
   } );
 

@@ -42,9 +42,9 @@ export const changeBMRformula = ( formula: {
 
 export const createNutritionNumbers = ( dailyTargets: {
   goal: 'Lose Weight' | 'Gain Muscle' | 'Maintenance',
-  dietLength: string | undefined,
+  dietLength?: string | undefined,
   workoutDays: string[],
-  targetWeeklyWeightLoss: number | undefined,
+  targetWeeklyWeightChange?: number | undefined,
 } ) => ( {
   type: CREATE_NUTRITION_NUMBERS,
   payload: dailyTargets,
@@ -133,16 +133,23 @@ const handleSetupMacroUserDetails = () => {
 
 const handleSettingMaintenanceCalories = ( state, action ) => {
   const { day, label: value } = action.payload;
-  const { days, targetWeeklyWeightLoss, goal } = state.weeklyTargets;
+  const { days, targetWeeklyWeightChange, goal } = state.weeklyTargets;
 
   let targetCalories;
-  if ( goal === 'Lose Weight' ) {
-    const dailyDeficit = ( targetWeeklyWeightLoss * 3500 ) / 7;
-    targetCalories = state.calorieRequirements[ value ] - dailyDeficit
+  if ( goal === 'Lose Weight' || goal === 'Gain Weight' ) {
+    const dailyCalorieChange = ( targetWeeklyWeightChange * 3500 ) / 7;
+
+    if ( goal === 'Lose Weight' ) {
+      targetCalories = state.calorieRequirements[ value ] - dailyCalorieChange
+    }
+    else if ( goal === 'Gain Weight' ) {
+      targetCalories = state.calorieRequirements[ value ] + dailyCalorieChange
+    }
   }
   else if ( goal === 'Maintenance' ) {
     targetCalories = state.calorieRequirements[ value ]
   }
+
 
   const updatedDays = days.map( item => {
     if ( item.day === day ) {
@@ -159,7 +166,6 @@ const handleSettingMaintenanceCalories = ( state, action ) => {
           label: option.label,
         }
       } );
-
       const macros = getMacroNumbers( {
         day: value,
         calories: targetCalories,
@@ -178,6 +184,8 @@ const handleSettingMaintenanceCalories = ( state, action ) => {
     return item;
   } );
 
+
+
   return {
     ...state,
     weeklyTargets: {
@@ -188,7 +196,7 @@ const handleSettingMaintenanceCalories = ( state, action ) => {
 };
 
 const handleCreatingNutritionNumbers = ( state, action ) => {
-  const { goal, dietLength, workoutDays, targetWeeklyWeightLoss } = action.payload;
+  const { goal, dietLength, workoutDays, targetWeeklyWeightChange } = action.payload;
   const { calorieRequirements } = state;
   const { maintenance, lightWorkout } = calorieRequirements;
   const days = [
@@ -210,14 +218,12 @@ const handleCreatingNutritionNumbers = ( state, action ) => {
   const totalDays = days.length;
 
   if ( goal === 'Lose Weight' ) {
-    const weeklyDeficit = targetWeeklyWeightLoss * 3500;
-    const dailyDeficit = weeklyDeficit / totalDays;
-
+    const dailyDeficit = ( targetWeeklyWeightChange * 3500 ) / totalDays;
     const caloriesPerDay = days.map( day => {
       const isWorkoutDay = workoutDays.includes( day );
       const calorieNeeds = isWorkoutDay ? lightWorkout : maintenance;
-      let calorieOptions = isWorkoutDay ? workoutOptions : nonWorkoutOptions;
       const targetCalories = calorieNeeds - dailyDeficit;
+      let calorieOptions = isWorkoutDay ? workoutOptions : nonWorkoutOptions;
 
       const macros = getMacroNumbers( {
         day: isWorkoutDay ? 'lightWorkout' : 'nonWorkout',
@@ -230,9 +236,8 @@ const handleCreatingNutritionNumbers = ( state, action ) => {
         day,
         workout: isWorkoutDay,
         calorieOptions,
-        targetCalories: calorieNeeds - dailyDeficit,
+        targetCalories,
         macros,
-        override: undefined,
       }
     } );
 
@@ -242,7 +247,7 @@ const handleCreatingNutritionNumbers = ( state, action ) => {
         goal,
         dietLength: parseInt( dietLength.split( ' ' )[ 0 ], 10 ),
         workoutDays,
-        targetWeeklyWeightLoss,
+        targetWeeklyWeightChange,
         days: caloriesPerDay,
       }
     }
@@ -266,7 +271,6 @@ const handleCreatingNutritionNumbers = ( state, action ) => {
         calorieOptions,
         targetCalories: calorieNeeds,
         macros,
-        override: undefined,
       };
     } );
 
@@ -278,7 +282,41 @@ const handleCreatingNutritionNumbers = ( state, action ) => {
         days: caloriesPerDay,
       },
     }
+  }
+  else if ( goal === 'Gain Weight' ) {
+    const dailySurplus = ( targetWeeklyWeightChange * 3500 ) / totalDays;
+    const caloriesPerDay = days.map( day => {
+      const isWorkoutDay = workoutDays.includes( day );
+      const calorieNeeds = isWorkoutDay ? lightWorkout : maintenance;
+      const targetCalories = calorieNeeds + dailySurplus;
+      let calorieOptions = isWorkoutDay ? workoutOptions : nonWorkoutOptions;
 
+      const macros = getMacroNumbers( {
+        day: isWorkoutDay ? 'lightWorkout' : 'nonWorkout',
+        calories: targetCalories,
+        userWeight: state.userDetails.weight,
+        goal: 'Gain Weight',
+      } );
+
+      return {
+        day,
+        workout: isWorkoutDay,
+        calorieOptions,
+        targetCalories,
+        macros,
+      }
+    } );
+
+    return {
+      ...state,
+      weeklyTargets: {
+        goal,
+        dietLength: parseInt( dietLength.split( ' ' )[ 0 ], 10 ),
+        workoutDays,
+        targetWeeklyWeightChange,
+        days: caloriesPerDay,
+      },
+    }
   }
 };
 
@@ -338,7 +376,7 @@ type State = {
     goal?: 'Lose Weight' | 'Gain Muscle' | 'Maintenance',
     dietLength?: number,
     workoutDays?: string[],
-    targetWeeklyWeightLoss?: number,
+    targetWeeklyWeightChange?: number,
     overrides?: {
       [ x in Days ]: number
     },

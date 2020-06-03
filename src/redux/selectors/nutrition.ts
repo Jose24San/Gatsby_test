@@ -2,6 +2,11 @@ import { fatRatios, proteinRatios } from "../../utilties/nutritionFormulas"
 
 export const getNutrition = state => state.nutrition;
 
+export const getNutritionGoal = state => {
+  const nutrition = getNutrition( state );
+  return ( nutrition.weeklyTargets ) ? nutrition.weeklyTargets.goal : 'Maintenance';
+};
+
 export const getBMRformula = state => {
   const nutrition = getNutrition( state );
 
@@ -28,7 +33,12 @@ export const getDailyCaloriesForWeek = state => {
 };
 
 export const getMacroPlanStep = state => {
+  const { weeklyTargets } = getNutrition( state );
   const calorieRequirements = getCalorieRequirements( state );
+
+  if ( weeklyTargets && Object.keys( weeklyTargets ).length > 1 ) {
+    return 3;
+  }
 
   if ( calorieRequirements && Object.keys( calorieRequirements ).length > 1 ) {
     return 2;
@@ -51,17 +61,21 @@ export const getMacroNumbers = ( options: {
 
   if ( goal === 'Lose Weight' ) {
     if ( day === 'nonWorkout' ) {
-      protein = Math.ceil( userWeight * proteinRatios.hypocaloric )
+      protein = Math.ceil( userWeight * proteinRatios.hypoCaloric )
       fats = Math.floor( userWeight * fatRatios.hypocaloric )
     }
     else if ( day === 'lightWorkout' || day === 'hardWorkout' ) {
-      protein = Math.ceil( userWeight * proteinRatios.hypocaloricWorkoutDay );
+      protein = Math.ceil( userWeight * proteinRatios.hypoCaloricWorkoutDay );
       fats = Math.floor( userWeight * fatRatios.hypocaloricWorkoutDay );
     }
   }
   else if ( goal === 'Maintenance' ) {
     protein = Math.ceil( userWeight * proteinRatios.maintenance );
-    fats = Math.floor( ( calories * fatRatios.maintenance ) / 9 );
+    fats = Math.floor( userWeight * fatRatios.maintenance );
+  }
+  else if ( goal === 'Gain Weight' ) {
+    protein = Math.ceil( userWeight * proteinRatios.hyperCaloric );
+    fats = Math.floor( userWeight * fatRatios.hyperCaloric )
   }
 
   caloriesLeft = calories - ( ( protein * 4 ) + ( fats * 9 ) );

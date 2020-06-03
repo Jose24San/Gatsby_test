@@ -1,0 +1,193 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "bodyLogs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "trackedOn",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "bodyLogs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "trackedOn",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "completedExercises",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "estimated1RM",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "exercise",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "trackedOn",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "completedExercises",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "estimated1RM",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "exercise",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "completedExercises",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "estimated1RM",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "muscleGroup",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "completedExercises",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "exercise",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "trackedOn",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "completedExercises",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "muscleGroup",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "trackedOn",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "completedExercises",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "secondaryMuscleGroup",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "trackedOn",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "completedExercises",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "trackedOn",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "completedExercises",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "trackedOn",
+          "order": "DESCENDING"
+        },
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "savedWorkouts",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "created",
+          "order": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "workoutLogs",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "userId",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "trackedOn",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}

@@ -2,7 +2,7 @@ import {
   getBMRformula,
   getCalorieRequirements, getDailyCaloriesForWeek, getMacroNumbers,
   getMacroPlanStep,
-  getNutrition,
+  getNutrition, getNutritionGoal,
   getTableCalorieRequirements, getUserWeight,
 } from '../nutrition'
 
@@ -24,6 +24,37 @@ describe( 'nutrition selector', () => {
         } )
 
     } );
+  } );
+
+  describe( 'getNutritionGoal', () => {
+
+    it( 'should return the users nutrition goal', () => {
+
+      const mockState = {
+        nutrition: {
+          weeklyTargets: {
+            goal: 'Gain Weight',
+          }
+        },
+      };
+
+      expect( getNutritionGoal( mockState ) )
+        .toEqual( 'Gain Weight' );
+
+    } );
+
+    it( 'should return maintenance if no goal exists', () => {
+
+      const mockState = {
+        nutrition: {
+        },
+      };
+
+      expect( getNutritionGoal( mockState ) )
+        .toEqual( 'Maintenance' );
+
+    } );
+
   } );
 
   describe( 'getBMRformula', () => {
@@ -352,6 +383,33 @@ describe( 'nutrition selector', () => {
 
     } );
 
+    it( 'should return step 3 if the user has created a macro meal plan', () => {
+
+      const mockState = {
+        nutrition: {
+          userDetails: { notEmpty: true },
+          calorieRequirements: {
+            formula: 'Mifflin-St Jeor',
+            maintenance: 1900,
+            lightWorkout: 2000,
+            hardWorkout: 2100,
+          },
+          weeklyTargets: {
+            dietLength: 12,
+            days: [ { notEmpty: true } ],
+            goal: 'Lose Weight',
+            targetWeeklyWeightChange: .87,
+            workoutDays: [],
+          },
+        },
+      };
+
+
+      expect( getMacroPlanStep( mockState ) )
+        .toEqual( 3 );
+
+    } );
+
   } );
 
   describe( 'getMacroNumbers', () => {
@@ -421,8 +479,8 @@ describe( 'nutrition selector', () => {
 
       const expected = {
         protein: 140,
-        carbs: 159,
-        fats: 88,
+        carbs: 162,
+        fats: 87,
       };
 
       expect( getMacroNumbers( options ) )
@@ -440,8 +498,8 @@ describe( 'nutrition selector', () => {
 
       const expected = {
         protein: 140,
-        carbs: 200,
-        fats: 99,
+        carbs: 227,
+        fats: 87,
       };
 
       expect( getMacroNumbers( options ) )
@@ -459,8 +517,65 @@ describe( 'nutrition selector', () => {
 
       const expected = {
         protein: 140,
-        carbs: 250,
-        fats: 115,
+        carbs: 313,
+        fats: 87,
+      };
+
+      expect( getMacroNumbers( options ) )
+        .toEqual( expected )
+
+    } );
+
+    it( 'should handle Gain Weight - nonWorkout day', () => {
+      const options = {
+        userWeight: 174,
+        calories: 2208,
+        day: 'nonWorkout',
+        goal: 'Gain Weight',
+      };
+
+      const expected = {
+        protein: 174,
+        carbs: 183,
+        fats: 87,
+      };
+
+      expect( getMacroNumbers( options ) )
+        .toEqual( expected )
+
+    } );
+
+    it( 'should handle Gain Weight - lightWorkout day', () => {
+      const options = {
+        userWeight: 174,
+        calories: 2468,
+        day: 'lightWorkout',
+        goal: 'Gain Weight',
+      };
+
+      const expected = {
+        protein: 174,
+        carbs: 248,
+        fats: 87,
+      };
+
+      expect( getMacroNumbers( options ) )
+        .toEqual( expected )
+
+    } );
+
+    it( 'should handle Gain Weight - hardWorkout day', () => {
+      const options = {
+        userWeight: 174,
+        calories: 2814,
+        day: 'hardWorkout',
+        goal: 'Gain Weight',
+      };
+
+      const expected = {
+        protein: 174,
+        carbs: 334,
+        fats: 87,
       };
 
       expect( getMacroNumbers( options ) )

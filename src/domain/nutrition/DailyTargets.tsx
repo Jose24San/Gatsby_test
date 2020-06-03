@@ -35,7 +35,7 @@ const DailyTargets = () => {
   const [ lowWeightChange, setLowWeightChange ] = useState( 0 );
   const [ highWeightChange, setHighWeightChange ] = useState( null );
   const userWeight = useSelector( getUserWeight );
-  const [ targetWeightLoss, setTargetWeightLoss ] = useState();
+  const [ targetWeightChange, setTargetWeightChange ] = useState();
 
   const dietLossLengths = [
     '6 Weeks',
@@ -56,26 +56,25 @@ const DailyTargets = () => {
   ];
 
   const handleSubmit = ( { goal, dietLength, workoutDays } ) => {
-
     if ( goal === 'Maintenance' ) {
       dispatch( createNutritionNumbers( {
         goal,
         workoutDays,
       } ) )
     }
-    else if ( goal === 'Lose Weight' ) {
+    else if ( goal === 'Lose Weight' || goal === 'Gain Weight' ) {
       dispatch( createNutritionNumbers( {
         goal,
         dietLength,
         workoutDays,
-        targetWeeklyWeightLoss: targetWeightLoss,
+        targetWeeklyWeightChange: targetWeightChange,
       } ) );
     }
   };
 
   const formik = useFormik( {
     initialValues: {
-      goal: '',
+      goal: 'Lose Weight',
       dietLength: '12 Weeks',
       workoutDays: [],
     },
@@ -91,15 +90,24 @@ const DailyTargets = () => {
 
   let dietLengths = dietLossLengths;
   if ( formik.values.goal === 'Lose Weight' ) dietLengths = dietLossLengths
-  if ( formik.values.goal === 'Gain Muscle' ) dietLengths = dietGainLengths
+  if ( formik.values.goal === 'Gain Weight' ) dietLengths = dietGainLengths
 
-  const calculateWeightLossNumbers = () => {
+  const calculateWeightChangeNumbers = () => {
     const { goal, dietLength } = formik.values;
 
     if ( goal && dietLength ) {
-      const lowerRange = Math.round( userWeight / 100 * .5 * 100 ) / 100;
-      const highRange = Math.round( userWeight / 100 * 1 * 100 ) / 100;
-      setTargetWeightLoss( lowerRange );
+      let lowerRange;
+      let highRange;
+      if ( goal === 'Lose Weight' ) {
+        lowerRange = Math.round( userWeight / 100 * .5 * 100 ) / 100;
+        highRange = Math.round( userWeight / 100 * 1 * 100 ) / 100;
+      }
+      else if ( goal === 'Gain Weight' ) {
+        lowerRange = Math.round( userWeight / 100 * .25 * 100 ) / 100;
+        highRange = Math.round( userWeight / 100 * .5 * 100 ) / 100;
+      }
+
+      setTargetWeightChange( lowerRange );
       setWeightChangeRange( `${ lowerRange }lbs - ${ highRange }lbs` );
       setLowWeightChange( lowerRange );
       setHighWeightChange( highRange );
@@ -112,14 +120,14 @@ const DailyTargets = () => {
   };
 
   useEffect(() => {
-    calculateWeightLossNumbers();
+    calculateWeightChangeNumbers();
   }, [ formik.values.goal, formik.values.dietLength ] );
 
   useEffect( () => {
     const { goal, dietLength } = formik.values;
 
-    if ( goal && dietLength && targetWeightLoss ) {
-      const calorieLoss = targetWeightLoss * 3500;
+    if ( goal && dietLength && targetWeightChange ) {
+      const calorieLoss = targetWeightChange * 3500;
       const workoutDays = 4;
       const nonWorkoutDays = 3;
 
@@ -128,13 +136,11 @@ const DailyTargets = () => {
       console.log( 'target calorie loss per day: ', dailyCaloricDeficit );
     }
 
-
   } );
 
-
-  if ( formik.values.goal === 'Maintenance' ) {
+  const renderMaintenanceForm = () => {
     return (
-      <Grid container spacing={ 3 }>
+      <Fragment>
         <Grid item xs={ 12 } sm={ 6 }>
           <Select
             error={ formik.errors.goal as string }
@@ -142,7 +148,7 @@ const DailyTargets = () => {
             { ...formik.getFieldProps( 'goal' ) }
             options={ [
               'Lose Weight',
-              'Gain Muscle',
+              'Gain Weight',
               'Maintenance',
             ] }
             label="Goal"
@@ -168,21 +174,192 @@ const DailyTargets = () => {
             helpertext="Select all the days you exercise"
           />
         </Grid>
-
-        <Grid item xs={ 12 } sm={ 4 }>
-          <Button
-            type="submit"
-            variant="contained"
-            color="secondary"
-            onClick={ formik.handleSubmit }
-          >
-            Generate Macro Meal Plan
-          </Button>
-        </Grid>
-      </Grid>
+      </Fragment>
     );
-  }
+  };
 
+  const renderMuscleGainForm = () => {
+    return (
+      <Fragment>
+        <Grid item xs={ 12 } sm={ 6 }>
+          <Select
+            error={ formik.errors.goal as string }
+            name="goal"
+            { ...formik.getFieldProps( 'goal' ) }
+            options={ [
+              'Lose Weight',
+              'Gain Weight',
+              'Maintenance',
+            ] }
+            label="Goal"
+          />
+        </Grid>
+
+        <Grid item xs={ 12 } sm={ 6 }>
+          <Select
+            error={ formik.errors.dietLength as string }
+            name="Diet Length"
+            { ...formik.getFieldProps( 'dietLength' ) }
+            options={ dietLengths }
+            label="Diet Length"
+          />
+        </Grid>
+
+        <Grid item xs={ 12 } sm={ 6 }>
+          <TextField
+            info={ [
+              'Why do we have a recommended weight gain range? You need to gain enough weight that muscle gains are able to be seen visually or on a scale but not so much weight that you start gaining more fat then is necessary.'
+            ] }
+            infoStyles={ classes.popoverPlacement }
+            fullWidth
+            variant="filled"
+            label="Recommended Weight Gain Per Week"
+            value={ weightChangeRange }
+          />
+        </Grid>
+
+        <Grid item xs={ 12 } sm={ 6 }>
+          <TextField
+            info="This is the potential weight you could gain over the course of the diet if you stick to the plan. It is possible to gain more or less weight then shown here but that depends on how close our estimated calories are for your specific body and how good you are about making adjustments week by week through the diet based on how your body changes and adapts."
+            infoStyles={ classes.popoverPlacement }
+            fullWidth
+            variant="filled"
+            label="Total Potential Weight Gain"
+            value={ totalChange }
+          />
+        </Grid>
+
+        <Grid item xs={ 12 }>
+          <Select
+            multiple
+            error={ formik.errors.workoutDays as string }
+            name="workoutDays"
+            { ...formik.getFieldProps( 'workoutDays' ) }
+            label="Days Per Week You Workout"
+            options={ [
+              'Monday',
+              'Tuesday',
+              'Wednesday',
+              'Thursday',
+              'Friday',
+              'Saturday',
+              'Sunday',
+            ] }
+            helpertext="Select all the days you exercise"
+          />
+        </Grid>
+
+        {
+          lowWeightChange !== 0 && (
+            <Grid item xs={ 12 }>
+              <Typography>Weight Gain Per Week</Typography>
+              <Slider
+                value={ targetWeightChange }
+                valueLabelDisplay="on"
+                onChange={ ( evt, value ) => setTargetWeightChange( value ) }
+                getAriaValueText={ ( value, index ) => `${ value }` }
+                step={ 0.1 }
+                min={ lowWeightChange }
+                max={ highWeightChange }
+              />
+            </Grid>
+          )
+        }
+      </Fragment>
+    );
+  };
+
+  const renderWeightLossForm = () => {
+    return (
+      <Fragment>
+        <Grid item xs={ 12 } sm={ 6 }>
+          <Select
+            error={ formik.errors.goal as string }
+            name="goal"
+            { ...formik.getFieldProps( 'goal' ) }
+            options={ [
+              'Lose Weight',
+              'Gain Weight',
+              'Maintenance',
+            ] }
+            label="Goal"
+          />
+        </Grid>
+
+        <Grid item xs={ 12 } sm={ 6 }>
+          <Select
+            error={ formik.errors.dietLength as string }
+            name="Diet Length"
+            { ...formik.getFieldProps( 'dietLength' ) }
+            options={ dietLengths }
+            label="Diet Length"
+          />
+        </Grid>
+
+        <Grid item xs={ 12 } sm={ 6 }>
+          <TextField
+            info={ [
+              'Why do we have a recommended weight loss range? Well if we do not lose enough weight then it will be difficult to tell if we are making progress week to week and that will usually leads to discouragement which usually ends with quitting the diet early. If we lose too much weight then the diet becomes much more difficult to follow consistently due to hunger and if you are too hungry then you are more likely to cheat on your diet and end up destroying any results you have made.',
+              'We are searching for that middle ground where we can lose a good amount of weight on a weekly basis without having to go to extreme dieting for the sake of speed. Slow and steady wins the race in the game of weight loss.'
+            ] }
+            infoStyles={ classes.popoverPlacement }
+            fullWidth
+            variant="filled"
+            label="Recommended Weight Loss Per Week"
+            value={ weightChangeRange }
+          />
+        </Grid>
+
+        <Grid item xs={ 12 } sm={ 6 }>
+          <TextField
+            info="This is the potential weight loss you could lose over the course of the diet if you stick to the plan. It is possible to lose more or less weight then shown here but that depends on how close our estimated calories are for your specific body and how good you are about making adjustments week by week through the diet based on how your body changes and adapts."
+            infoStyles={ classes.popoverPlacement }
+            fullWidth
+            variant="filled"
+            label="Total Potential Weight Loss"
+            value={ totalChange }
+          />
+        </Grid>
+
+        <Grid item xs={ 12 }>
+          <Select
+            multiple
+            error={ formik.errors.workoutDays as string }
+            name="workoutDays"
+            { ...formik.getFieldProps( 'workoutDays' ) }
+            label="Days Per Week You Workout"
+            options={ [
+              'Monday',
+              'Tuesday',
+              'Wednesday',
+              'Thursday',
+              'Friday',
+              'Saturday',
+              'Sunday',
+            ] }
+            helpertext="Select all the days you exercise"
+          />
+        </Grid>
+
+        {
+          lowWeightChange !== 0 && (
+            <Grid item xs={ 12 }>
+              <Typography>Weight Loss Per Week</Typography>
+              <Slider
+                value={ targetWeightChange }
+                valueLabelDisplay="on"
+                onChange={ ( evt, value ) => setTargetWeightChange( value ) }
+                getAriaValueText={ ( value, index ) => `${ value }` }
+                step={ 0.1 }
+                min={ lowWeightChange }
+                max={ highWeightChange }
+              />
+            </Grid>
+          )
+        }
+      </Fragment>
+    )
+  };
 
   return (
     <Fragment>
@@ -192,95 +369,21 @@ const DailyTargets = () => {
 
       <Grid container spacing={ 3 }>
 
-        <Grid item xs={ 12 } sm={ 6 }>
-          <Select
-            error={ formik.errors.goal as string }
-            name="goal"
-            { ...formik.getFieldProps( 'goal' ) }
-            options={ [
-              'Lose Weight',
-              'Gain Muscle',
-              'Maintenance',
-            ] }
-            label="Goal"
-          />
-        </Grid>
+        {
+          formik.values.goal === 'Lose Weight' && (
+            renderWeightLossForm()
+          )
+        }
 
         {
-          formik.values.goal !== 'Maintenance' && (
-            <Fragment>
-              <Grid item xs={ 12 } sm={ 6 }>
-                <Select
-                  error={ formik.errors.dietLength as string }
-                  name="Diet Length"
-                  { ...formik.getFieldProps( 'dietLength' ) }
-                  options={ dietLengths }
-                  label="Diet Length"
-                />
-              </Grid>
+          formik.values.goal === 'Maintenance' && (
+            renderMaintenanceForm()
+          )
+        }
 
-              <Grid item xs={ 12 } sm={ 6 }>
-                <TextField
-                  info={ [
-                    'Why do we have a recommended weight loss range? Well if we do not lose enough weight then it will be difficult to tell if we are making progress week to week and that will usually leads to discouragement which usually ends with quitting the diet early. If we lose too much weight then the diet becomes much more difficult to follow consistently due to hunger and if you are too hungry then you are more likely to cheat on your diet and end up destroying any results you have made.',
-                    'We are searching for that middle ground where we can lose a good amount of weight on a weekly basis without having to go to extreme dieting for the sake of speed. Slow and steady wins the race in the game of weight loss.'
-                  ] }
-                  infoStyles={ classes.popoverPlacement }
-                  fullWidth
-                  variant="filled"
-                  label="Recommended Weight Loss Per Week"
-                  value={ weightChangeRange }
-                />
-              </Grid>
-
-              <Grid item xs={ 12 } sm={ 6 }>
-                <TextField
-                  info="This is the potential weight loss you could lose over the course of the diet if you stick to the plan. It is possible to lose more or less weight then shown here but that depends on how close our estimated calories are for your specific body and how good we are about making adjustments through the diet."
-                  infoStyles={ classes.popoverPlacement }
-                  fullWidth
-                  variant="filled"
-                  label="Total Potential Weight Loss"
-                  value={ totalChange }
-                />
-              </Grid>
-
-              <Grid item xs={ 12 }>
-                <Select
-                  multiple
-                  error={ formik.errors.workoutDays as string }
-                  name="workoutDays"
-                  { ...formik.getFieldProps( 'workoutDays' ) }
-                  label="Days Per Week You Workout"
-                  options={ [
-                    'Monday',
-                    'Tuesday',
-                    'Wednesday',
-                    'Thursday',
-                    'Friday',
-                    'Saturday',
-                    'Sunday',
-                  ] }
-                  helpertext="Select all the days you exercise"
-                />
-              </Grid>
-
-              {
-                lowWeightChange !== 0 && (
-                  <Grid item xs={ 12 }>
-                    <Typography>Weight Loss Per Week</Typography>
-                    <Slider
-                      value={ targetWeightLoss }
-                      valueLabelDisplay="on"
-                      onChange={ ( evt, value ) => setTargetWeightLoss( value ) }
-                      getAriaValueText={ ( value, index ) => `${ value }` }
-                      step={ 0.1 }
-                      min={ lowWeightChange }
-                      max={ highWeightChange }
-                    />
-                  </Grid>
-                )
-              }
-            </Fragment>
+        {
+          formik.values.goal === 'Gain Weight' && (
+            renderMuscleGainForm()
           )
         }
 

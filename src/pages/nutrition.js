@@ -4,9 +4,9 @@ import { makeStyles } from '@material-ui/core/styles'
 import SingleColumn from '../layouts/SingleColumn'
 import SpoonForkImage from '../images/SpoonForkImage'
 import NutritionCard from '../components/Cards/NutritionCard'
-import Energy from '../images/Energy'
-import Water from '../images/Water'
 import { useDispatch } from 'react-redux'
+import Paper from '../images/Paper'
+import { openDialog } from '../redux/reducers/dialogs'
 
 const useStyles = makeStyles( theme => ( {
   cardContainer: {
@@ -22,17 +22,17 @@ const useStyles = makeStyles( theme => ( {
 
 const Nutrition = () => {
   const classes = useStyles()
+  const dispatch = useDispatch();
 
   return (
     <SingleColumn title="Nutrition" containerStyle={ { minHeight: '80vh' } }>
       <Grid container spacing={ 4 } className={ classes.container }>
-
         <Grid className={ classes.cardContainer } item xs={ 12 }>
           <NutritionCard
-            title="Macro & Calorie Meal Plan"
+            title="Macro & Calorie Meal Plan - Free"
             description={ [
               'Calorie Calculations for gaining, maintaining and losing weight',
-              'Guide approached for reaching goal with best practices in mind',
+              'Guided approach for reaching goals with best practices in mind',
               'Calorie and Macronutrient break down by day'
             ] }
             iconImage={ <SpoonForkImage/> }
@@ -42,43 +42,19 @@ const Nutrition = () => {
 
         <Grid className={ classes.cardContainer } item xs={ 12 }>
           <NutritionCard
-            title="Fitomation Meal Plan"
+            title="Fitomation Meal Plan - $19.99"
             description={ [
-              'Custom made meal plan that span 6-12 weeks',
-              'Calorie and Macro break down by day',
+              'Custom made meal plan that spans 6-16 weeks depending on goal',
+              'Calorie and Macros broken down by day',
               'Meal number and sizes breakdown based on activity level for each day',
-              'Built in auto adjusting to keep from plateauing',
-              'Grocery list meal plan builder'
+              'Auto adjusting via the custom account section to keep from plateauing',
+              'Graphs and visuals to track progress via custom account section',
+              'Grocery list suggestions'
             ] }
-            iconImage={ <SpoonForkImage/> }
-            link="nutrition/macroGenerator"
+            iconImage={ <Paper /> }
+            onClick={ () => dispatch( openDialog( 'subscribe' ) ) }
           />
         </Grid>
-
-        {/*<Grid className={ classes.cardContainer } item xs={ 12 } sm={ 6 }>*/}
-        {/*  <NutritionCard*/}
-        {/*    title="Total Daily Energy Expenditure"*/}
-        {/*    description="Calories you need to eat to cover you energy requirements for the day."*/}
-        {/*    iconImage={ <Energy /> }*/}
-        {/*  />*/}
-        {/*</Grid>*/}
-
-        {/*<Grid className={ classes.cardContainer } item xs={ 12 } sm={ 6 }>*/}
-        {/*  <NutritionCard*/}
-        {/*    title="Resting Metabolic Rate"*/}
-        {/*    description="Minimum amount of energy the body uses just to maintain itself without any activity"*/}
-        {/*    iconImage={ <Energy /> }*/}
-        {/*  />*/}
-        {/*</Grid>*/}
-
-        {/*<Grid className={ classes.cardContainer } item xs={ 12 } sm={ 6 }>*/}
-        {/*  <NutritionCard*/}
-        {/*    title="Recommended Water Intake"*/}
-        {/*    description="Amount of water you should be drinking to reach your fitness goals"*/}
-        {/*    iconImage={ <Water className={ classes.iconContainerStyle } /> }*/}
-        {/*  />*/}
-        {/*</Grid>*/}
-
       </Grid>
     </SingleColumn>
   );

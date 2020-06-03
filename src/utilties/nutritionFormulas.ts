@@ -48,19 +48,22 @@ export const proteinRatios = {
   min: .6,
   max: 1.2,
   maintenance: .8,
-  hypocaloric: 1.1,
-  hypocaloricWorkoutDay: 1.05,
+  hypoCaloric: 1.1,
+  hypoCaloricWorkoutDay: 1.05,
+  hyperCaloric: 1,
 };
 
 export const fatRatios = {
   min: .25,
   max: .4,
-  maintenance: .4,
+  maintenance: .5,
   hypocaloric: .25,
   hypocaloricWorkoutDay: .25,
+  hyperCaloric: .5,
 }
 
 export const carbRatios = {
   min: .6,
   max: 2.5,
+  hypoCaloric: 1.5,
 };

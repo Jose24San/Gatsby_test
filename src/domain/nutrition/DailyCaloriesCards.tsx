@@ -4,7 +4,7 @@ import { Paper, Typography, Grid, Tooltip } from "@material-ui/core"
 import RadioButtons from '../../components/RadioButtons/RadioButtons';
 import Switch from '../../components/Switch/Switch';
 import { useDispatch, useSelector } from "react-redux"
-import { getDailyCaloriesForWeek } from "../../redux/selectors/nutrition"
+import { getDailyCaloriesForWeek, getNutritionGoal } from "../../redux/selectors/nutrition"
 import TextField from '../../components/TextField/TextField';
 import { setMaintenanceCalories } from "../../redux/reducers/nutrition"
 import Table from "../../components/Table/Table";
@@ -45,12 +45,22 @@ const DailyCaloriesCards = () => {
   const classes = useStyles();
   const dispatch = useDispatch();
   const calorieInformation = useSelector( getDailyCaloriesForWeek );
+  const nutritionGoal = useSelector( getNutritionGoal );
 
   const handleCalorieSelection = ( day, label ) => {
     dispatch( setMaintenanceCalories( { day, label } ) );
   };
 
-  console.log( 'calorie information: ', calorieInformation );
+  let targetCaloriesDescription;
+  if ( nutritionGoal === 'Gain Weight' ) {
+    targetCaloriesDescription = "We take your expected energy expenditure for this day and add the necessary calories to come up with your calorie target to hit your weekly weight gain goal";
+  }
+  else if ( nutritionGoal === 'Lose Weight' ) {
+    targetCaloriesDescription = "We take your expected energy expenditure for this day and remove the calories needed to come up with your calorie target to hit your weekly weight loss goal"
+  }
+  else {
+    targetCaloriesDescription = "We take your maintenance calories plus your expected energy expenditure if you are working out on this day and add that together to come up with your calorie target to maintain your weight"
+  }
 
   return (
     <div className={ classes.container }>
@@ -59,7 +69,6 @@ const DailyCaloriesCards = () => {
           calorieInformation.map( item => (
             <Grid item xs={ 12 } sm={ 6 } key={ item.day }>
               <Paper className={ classes.cardContainer } elevation={ 3 }>
-
 
                 <Grid container justify="space-between">
                   <Typography className={ classes.formHeader } variant="h2">
@@ -89,15 +98,13 @@ const DailyCaloriesCards = () => {
                   />
                 </div>
 
-
                 <TextField
-                  info="We take your expected energy expenditure for this day and remove the calories needed to come up with your calorie target to hit your weekly weight loss goal"
+                  info={ targetCaloriesDescription }
                   fullWidth
                   variant="filled"
                   label="Target Calories"
                   value={ item.targetCalories }
                 />
-
 
                 <Table
                   descriptionText="Macros needed for this day"

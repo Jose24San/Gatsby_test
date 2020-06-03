@@ -27,7 +27,6 @@ export default function RadioButtons( {
 }: Props ) {
   const classes = useStyles();
   const handleChange = ( event ) => {
-    console.log( 'radio group changed: ', event.target.value );
     onChange( event.target.value );
   }
 

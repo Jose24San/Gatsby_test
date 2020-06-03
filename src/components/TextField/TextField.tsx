@@ -71,17 +71,14 @@ export default function TextField( {
         )
       }
 
+      {/*
+          // @ts-ignore */}
       <MuiTextField
-        // @ts-ignore
         className={ className }
-        // @ts-ignore
         fullWidth={ fullWidth }
-        // @ts-ignore
         label={ label }
         type={ type }
-        // @ts-ignore
         value={ value }
-        //@ts-ignore: does like my props
         variant={ variant }
       />
     </div>

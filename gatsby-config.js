@@ -1,10 +1,11 @@
 module.exports = {
   siteMetadata: {
-    title: 'Gatsby Default Starter',
-    description: 'Kick off your next, great Gatsby project with this default starter. This barebones starter ships with the main Gatsby configuration files you might need.',
-    author: '@gatsbyjs',
+    title: 'Fitomation',
+    description: 'An application dedicated to using software to drive down the cost of personalized training',
+    author: 'Fitomation',
   },
   plugins: [
+    'gatsby-plugin-material-ui',
     'gatsby-plugin-react-helmet',
     {
       resolve: 'gatsby-source-filesystem',
@@ -29,6 +30,20 @@ module.exports = {
     },
     'gatsby-plugin-emotion',
     'gatsby-plugin-typescript',
+    {
+      resolve: 'gatsby-plugin-firebase',
+      options: {
+        credentials: {
+          apiKey: 'AIzaSyDqocPOu_ZMLivtKW1xk1WdzrR29zZooA8',
+          authDomain: 'fitness-tracker-a5204.firebaseapp.com',
+          databaseURL: 'https://fitness-tracker-a5204.firebaseio.com',
+          projectId: 'fitness-tracker-a5204',
+          storageBucket: 'fitness-tracker-a5204.appspot.com',
+          messagingSenderId: '791050351564',
+          appId: '1:791050351564:web:27ddb808b18fa1d5eba369',
+        }
+      },
+    }
     // {
     //   resolve: 'gatsby-plugin-typescript',
     //   options: {

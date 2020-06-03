@@ -47,10 +47,8 @@ const NutritionCard = ( {
       elevation={ 3 }
       className={ classes.card }
       onClick={ () => {
-        if ( onClick ) {
-          onClick()
-        }
-        navigate( link )
+        if ( onClick ) onClick();
+        if ( link ) navigate( link );
       } }
     >
       <Grid container>
@@ -67,7 +65,7 @@ const NutritionCard = ( {
               )
               : (
                 description.map( text => (
-                  <Typography variant="body2" className={ classes.description }>
+                  <Typography key={ text } variant="body2" className={ classes.description }>
                     { text }
                   </Typography>
                 ) )
@@ -89,7 +87,7 @@ type Props = {
   description: string | string[],
   iconImage: any,
   iconContainerStyle?: object,
-  link: string,
+  link?: string,
   onClick?: () => void,
   title: string,
 };

@@ -49,10 +49,21 @@ const useStyles = makeStyles( theme => ( {
   },
 } ) )
 
-const ContentBlock = ( { image, title, description, buttonText, link, reverse } ) => {
+const ContentBlock = ( {
+  buttonText,
+  description,
+  image,
+  link,
+  onClick,
+  reverse,
+  title
+}: Props ) => {
   const classes = useStyles()
+  const onButtonClick = () => {
+    if ( onClick ) {
+      onClick();
+    }
 
-  const navigateToLink = () => {
     if ( link ) {
       navigate( link );
     }
@@ -75,7 +86,7 @@ const ContentBlock = ( { image, title, description, buttonText, link, reverse } 
         { description }
       </Typography>
       <Button
-        onClick={ navigateToLink }
+        onClick={ onButtonClick }
         className={ classes.button }
         variant="contained"
         color="secondary"
@@ -107,11 +118,13 @@ const ContentBlock = ( { image, title, description, buttonText, link, reverse } 
 }
 
 type Props = {
+  buttonText: string,
   image: any,
   title: string,
   description: string,
   reverse?: boolean,
   link?: string,
+  onClick?: () => void,
 };
 
 export default ContentBlock
