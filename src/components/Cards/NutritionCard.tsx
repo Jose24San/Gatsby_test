@@ -51,7 +51,7 @@ const NutritionCard = ( {
         if ( link ) navigate( link );
       } }
     >
-      <Grid container>
+      <Grid container spacing={ 2 }>
         <Grid item xs={ 8 }>
           <Typography variant="h6" className={ classes.cardTitle }>
             { title }

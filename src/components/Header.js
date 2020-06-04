@@ -50,22 +50,6 @@ const useStyles = makeStyles( theme => ( {
     width: 50,
     height: 50,
   },
-
-
-  root: {
-    '& .MuiPopover-root': {
-      maxWidth: 300,
-    },
-  },
-  contain: {
-    maxWidth: 275,
-    height: 10,
-    overflowX: 'hidden',
-  },
-
-  mobileContainer: {
-    overflowX: 'hidden',
-  },
 } ) )
 
 const Header = ( { siteTitle } ) => {
@@ -101,7 +85,7 @@ const Header = ( { siteTitle } ) => {
                 {
                   isSmallViewport
                     ? (
-                      <div className={ classes.mobileContainer }>
+                      <div>
                         <IconButton
                           className={ classes.iconContainer }
                           onClick={ handleClick }>
@@ -114,14 +98,13 @@ const Header = ( { siteTitle } ) => {
                           keepMounted
                           open={ Boolean( anchorEl ) }
                           onClose={ handleClose }
-                          className={ `${ classes.contain }` }
-                          PopoverClasses={ {
-                            // root: classes.root,
-                            // paper: classes.root
-                          } }
                         >
-                          <MenuItem onClick={ handleClose }>HOME</MenuItem>
-                          <MenuItem onClick={ handleClose }>NUTRITION</MenuItem>
+                          <MenuItem onClick={ handleClose }>
+                            <Link to="/" className={ classes.mobileLink }>HOME</Link>
+                          </MenuItem>
+                          <MenuItem onClick={ handleClose }>
+                            <Link to="/nutrition" className={ classes.mobileLink }>NUTRITION</Link>
+                          </MenuItem>
                           <MenuItem onClick={ openSubscribe }>
                             WORKOUTS
                           </MenuItem>

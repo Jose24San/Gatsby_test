@@ -12,9 +12,6 @@ const useStyles = makeStyles( theme => ( {
   cardContainer: {
     marginTop: 40,
   },
-  container: {
-    margin: 0,
-  },
   iconContainerStyle: {
     width: 70,
   },
@@ -26,7 +23,7 @@ const Nutrition = () => {
 
   return (
     <SingleColumn title="Nutrition" containerStyle={ { minHeight: '80vh' } }>
-      <Grid container spacing={ 4 } className={ classes.container }>
+      <Grid container spacing={ 4 }>
         <Grid className={ classes.cardContainer } item xs={ 12 }>
           <NutritionCard
             title="Macro & Calorie Meal Plan - Free"
