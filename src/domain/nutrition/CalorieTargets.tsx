@@ -110,13 +110,13 @@ const CalorieTargets = () => {
 
   const mifflenFormik = useFormik( {
     initialValues: {
-      gender: 'Male',
-      age: 27,
-      weight: 174,
+      gender: '',
+      age: '',
+      weight: '',
       activityLevel: '',
       goal: '',
-      feet: 5,
-      inches: 8,
+      feet: '',
+      inches: '',
     },
     validationSchema: Yup.object( {
       gender: Yup.string().required( 'Required' ),
@@ -295,7 +295,7 @@ const CalorieTargets = () => {
             color="secondary"
             onClick={ handleSubmit }
           >
-            Calculate Macros
+            Calculate Calorie Targets
           </Button>
         </Grid>
 

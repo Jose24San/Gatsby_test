@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react'
+import React, { useEffect, Fragment } from 'react'
 import { makeStyles } from '@material-ui/core/styles'
 import { Helmet } from "react-helmet"
 import SingleColumn from '../../layouts/SingleColumn'
@@ -45,8 +45,6 @@ const MacroGenerator = () => {
     }
   } );
 
-
-  console.log( 'what step am I on: ', step );
   return (
     <SingleColumn title="Macro Generator" className={ classes.pageContainer }>
       <Helmet>
