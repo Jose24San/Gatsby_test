@@ -1,8 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import BaseLayout from './BaseLayout'
-import HeroBanner from '../components/HeroBanner'
-import PageWidth from '../components/PageWidth'
+import HeroBanner from '../domain/global/HeroBanner'
+import PageWidth from '../domain/global/PageWidth'
 
 
 const SingleColumn = ( { children, title, subtitle, containerStyle, className } ) => {

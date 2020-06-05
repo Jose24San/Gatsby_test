@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import HeroBanner from './HeroBanner'
 import { useStaticQuery, graphql } from 'gatsby'
 import { ThemeProvider } from '@material-ui/core/styles'
-import { theme } from '../styles/theme'
+import { theme } from '../../styles/theme'
 
 import Header from './Header'
 import './layout.css'

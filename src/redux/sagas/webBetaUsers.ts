@@ -1,5 +1,5 @@
 import { put, takeEvery, select, call, all } from 'redux-saga/effects';
-import { BETA_USER_SUBSCRIBE } from "../reducers/webAnalytics"
+import { BETA_USER_SUBSCRIBE } from "../reducers/webBetaUsers"
 import firebase from "gatsby-plugin-firebase"
 import { showNotification } from "../reducers/notification"
 

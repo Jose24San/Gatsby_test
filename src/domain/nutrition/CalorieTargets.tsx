@@ -2,7 +2,7 @@ import React, { Fragment, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles'
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import Select from '../../components/Select'
+import Select from '../../components/Select/Select'
 import { TextField, Grid, Typography, Button, InputLabel } from '@material-ui/core';
 import MaterialTable from 'material-table';
 import MoreInfo from '../../components/Popover/MoreInfo'
@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import { calculateCalorieRequirements, changeBMRformula } from '../../redux/reducers/nutrition'
 import { getBMRformula, getTableCalorieRequirements } from '../../redux/selectors/nutrition'
 import Table from '../../components/Table/Table';
+import { EVENTS, logAnalyticEvent } from "../../redux/reducers/firebaseAnalytics"
 
 const useStyles = makeStyles( theme => ( {
   container: {
@@ -106,6 +107,13 @@ const CalorieTargets = () => {
       } ) );
     }
 
+    if ( gender === 'Male' ) {
+      dispatch( logAnalyticEvent( EVENTS.NUTRITION_PLAN_FOR_MALE ) )
+    }
+    else if ( gender === 'Female' ) {
+      dispatch( logAnalyticEvent( EVENTS.NUTRITION_PLAN_FOR_FEMALE ) )
+    }
+    dispatch( logAnalyticEvent( EVENTS.CREATED_CALORIE_TARGETS_1 ) )
   };
 
   const mifflenFormik = useFormik( {

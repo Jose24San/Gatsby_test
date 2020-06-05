@@ -10,11 +10,12 @@ import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import Menu from '@material-ui/core/Menu'
 import MenuItem from '@material-ui/core/MenuItem'
-import { colors } from '../styles/theme'
-import Subscribe from '../domain/global/Subscribe'
-import Notification from '../domain/global/Notification'
+import { colors } from '../../styles/theme'
+import Subscribe from './Subscribe'
+import Notification from './Notification'
 import { useDispatch } from 'react-redux'
-import { openDialog } from '../redux/reducers/dialogs'
+import { openDialog } from '../../redux/reducers/dialogs'
+import { EVENTS, logAnalyticEvent } from '../../redux/reducers/firebaseAnalytics'
 
 
 
@@ -75,6 +76,7 @@ const Header = ( { siteTitle } ) => {
     }
   }
 
+
   return (
     <Location>
       {
@@ -102,10 +104,16 @@ const Header = ( { siteTitle } ) => {
                           <MenuItem onClick={ handleClose }>
                             <Link to="/" className={ classes.mobileLink }>HOME</Link>
                           </MenuItem>
-                          <MenuItem onClick={ handleClose }>
+                          <MenuItem onClick={ event => {
+                            handleClick( event );
+                            dispatch( logAnalyticEvent( EVENTS.INTERESTED_IN_NUTRITION ) )
+                          } }>
                             <Link to="/nutrition" className={ classes.mobileLink }>NUTRITION</Link>
                           </MenuItem>
-                          <MenuItem onClick={ openSubscribe }>
+                          <MenuItem onClick={ () => {
+                            openSubscribe()
+                            dispatch( logAnalyticEvent( EVENTS.INTERESTED_IN_WORKOUTS ) )
+                          } }>
                             WORKOUTS
                           </MenuItem>
                           {/*<MenuItem onClick={ handleClose }>*/}
@@ -121,13 +129,23 @@ const Header = ( { siteTitle } ) => {
                         <Typography variant="body2" className={ classes.linkContainer }>
                           <Link to="/" className={ classes.link }>HOME</Link>
                         </Typography>
-                        <Typography variant="body2" className={ classes.linkContainer }>
+                        <Typography
+                          variant="body2"
+                          className={ classes.linkContainer }
+                          onClick={ () => {
+                            dispatch( logAnalyticEvent( EVENTS.INTERESTED_IN_NUTRITION ) )
+                          } }
+                        >
                           <Link to="/nutrition" className={ classes.link }>NUTRITION</Link>
                         </Typography>
                         <Typography
-                          onClick={ openSubscribe }
+                          onClick={ () => {
+                            openSubscribe();
+                            dispatch( logAnalyticEvent( EVENTS.INTERESTED_IN_WORKOUTS ) )
+                          } }
                           variant="body2"
-                          className={ classes.linkContainer }>
+                          className={ classes.linkContainer }
+                        >
                           {/*<Link to="/" className={ classes.link }>*/}
                           {/*  WORKOUTS*/}
                           {/*</Link>*/}

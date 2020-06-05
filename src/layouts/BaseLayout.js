@@ -2,8 +2,8 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { ThemeProvider } from '@material-ui/core/styles'
 import { theme } from '../styles/theme'
-import Footer from '../components/Footer'
-import Header from '../components/Header'
+import Footer from '../domain/global/Footer'
+import Header from '../domain/global/Header'
 
 const BaseLayout = ( { children } ) => (
   <ThemeProvider theme={ theme }>

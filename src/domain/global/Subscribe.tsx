@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux"
 import { getDialogByName } from "../../redux/selectors/dialogs"
 import { closeDialog } from "../../redux/reducers/dialogs"
 import NotificationSubscribeDialog from "../../components/Dialog/NotificationSubscribeDialog"
-import { betaUserSubscribe } from "../../redux/reducers/webAnalytics"
+import { betaUserSubscribe } from "../../redux/reducers/webBetaUsers"
 
 
 

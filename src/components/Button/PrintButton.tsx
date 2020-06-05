@@ -2,6 +2,8 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import PrintIcon from '@material-ui/icons/Print';
 import { Typography, Divider } from "@material-ui/core";
+import { useDispatch } from "react-redux"
+import { EVENTS, logAnalyticEvent } from "../../redux/reducers/firebaseAnalytics"
 
 
 
@@ -32,8 +34,12 @@ const useStyles = makeStyles( theme => ( {
 
 const PrintButton = ( { className }: Props ) => {
   const classes = useStyles();
+  const dispatch = useDispatch();
 
-  const print = () => window.print();
+  const print = () => {
+    dispatch( logAnalyticEvent( EVENTS.PRINTING_NUTRITION_PLAN ) )
+    window.print();
+  }
 
   return (
     <div className={ classes.printSection }>

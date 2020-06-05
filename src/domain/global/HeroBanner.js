@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 import Typography from '@material-ui/core/Typography'
 import { makeStyles } from '@material-ui/core/styles'
 import PageWidth from './PageWidth'
-import { colors } from '../styles/theme'
+import { colors } from '../../styles/theme'
 
 const useStyles = makeStyles( () => ( {
   section: {

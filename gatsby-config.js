@@ -41,6 +41,7 @@ module.exports = {
           storageBucket: 'fitness-tracker-a5204.appspot.com',
           messagingSenderId: '791050351564',
           appId: '1:791050351564:web:27ddb808b18fa1d5eba369',
+          measurementId: 'G-TP7Z8DVY5D',
         }
       },
     }

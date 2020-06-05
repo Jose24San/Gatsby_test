@@ -1,11 +1,11 @@
 import React from 'react'
 import { Typography, Grid, Button, TextField } from '@material-ui/core'
 import { makeStyles } from '@material-ui/core/styles'
-import { colors } from '../styles/theme'
+import { colors } from '../../styles/theme'
 import { useDispatch } from "react-redux"
 import { useFormik } from "formik"
 import * as Yup from 'yup'
-import { contactUsSubmission } from "../redux/reducers/contactUs"
+import { contactUsSubmission } from "../../redux/reducers/contactUs"
 
 const useStyles = makeStyles( theme => ( {
   container: {
@@ -126,7 +126,7 @@ const ContactUs = () => {
         {/*
           // @ts-ignore */}
         <Button
-          onClick={ formik.handleSubmit }
+          onClick={ () => formik.handleSubmit() }
           className={ classes.button }
           variant="contained"
           color="secondary"

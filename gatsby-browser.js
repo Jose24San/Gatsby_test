@@ -4,6 +4,7 @@
  * See: https://www.gatsbyjs.org/docs/browser-apis/
  */
 
+import 'firebase/analytics'
 import 'firebase/auth'
 import 'firebase/firestore'
 import './src/styles/global.css'

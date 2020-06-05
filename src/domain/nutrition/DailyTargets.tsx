@@ -3,13 +3,12 @@ import { makeStyles } from '@material-ui/core/styles'
 import { useFormik } from "formik"
 import * as Yup from 'yup';
 import { Grid, Typography, Button, Slider} from '@material-ui/core';
-import Select from "../../components/Select"
+import Select from "../../components/Select/Select"
 import { useDispatch, useSelector } from "react-redux"
 import { getUserWeight } from "../../redux/selectors/nutrition"
-import MoreInfo from '../../components/Popover/MoreInfo';
 import { createNutritionNumbers } from "../../redux/reducers/nutrition"
 import TextField from '../../components/TextField/TextField';
-import Accordion from '../../components/Accordion/Accordion';
+import { EVENTS, logAnalyticEvent } from "../../redux/reducers/firebaseAnalytics"
 
 
 const useStyles = makeStyles( theme => ( {
@@ -57,12 +56,20 @@ const DailyTargets = () => {
 
   const handleSubmit = ( { goal, dietLength, workoutDays } ) => {
     if ( goal === 'Maintenance' ) {
+      dispatch( logAnalyticEvent( EVENTS.CREATED_NUTRITION_PLAN_FOR_MAINTENANCE ) );
       dispatch( createNutritionNumbers( {
         goal,
         workoutDays,
       } ) )
     }
     else if ( goal === 'Lose Weight' || goal === 'Gain Weight' ) {
+      if ( goal === 'Lose Weight' ) {
+        dispatch( logAnalyticEvent( EVENTS.CREATED_NUTRITION_PLAN_FOR_LOSING_WEIGHT ) );
+      }
+      else if ( goal === 'Gain Weight' ) {
+        dispatch( logAnalyticEvent( EVENTS.CREATED_NUTRITION_PLAN_FOR_GAINING_WEIGHT ) );
+      }
+
       dispatch( createNutritionNumbers( {
         goal,
         dietLength,
@@ -70,12 +77,13 @@ const DailyTargets = () => {
         targetWeeklyWeightChange: targetWeightChange,
       } ) );
     }
+    dispatch( logAnalyticEvent( EVENTS.CREATED_MACRO_PLAN_2 ) );
   };
 
   const formik = useFormik( {
     initialValues: {
-      goal: 'Lose Weight',
-      dietLength: '12 Weeks',
+      goal: '',
+      dietLength: '',
       workoutDays: [],
     },
     validationSchema: Yup.object( {
@@ -143,20 +151,6 @@ const DailyTargets = () => {
       <Fragment>
         <Grid item xs={ 12 } sm={ 6 }>
           <Select
-            error={ formik.errors.goal as string }
-            name="goal"
-            { ...formik.getFieldProps( 'goal' ) }
-            options={ [
-              'Lose Weight',
-              'Gain Weight',
-              'Maintenance',
-            ] }
-            label="Goal"
-          />
-        </Grid>
-
-        <Grid item xs={ 12 } sm={ 6 }>
-          <Select
             multiple
             error={ formik.errors.workoutDays as string }
             name="workoutDays"
@@ -181,20 +175,6 @@ const DailyTargets = () => {
   const renderMuscleGainForm = () => {
     return (
       <Fragment>
-        <Grid item xs={ 12 } sm={ 6 }>
-          <Select
-            error={ formik.errors.goal as string }
-            name="goal"
-            { ...formik.getFieldProps( 'goal' ) }
-            options={ [
-              'Lose Weight',
-              'Gain Weight',
-              'Maintenance',
-            ] }
-            label="Goal"
-          />
-        </Grid>
-
         <Grid item xs={ 12 } sm={ 6 }>
           <Select
             error={ formik.errors.dietLength as string }
@@ -272,20 +252,6 @@ const DailyTargets = () => {
   const renderWeightLossForm = () => {
     return (
       <Fragment>
-        <Grid item xs={ 12 } sm={ 6 }>
-          <Select
-            error={ formik.errors.goal as string }
-            name="goal"
-            { ...formik.getFieldProps( 'goal' ) }
-            options={ [
-              'Lose Weight',
-              'Gain Weight',
-              'Maintenance',
-            ] }
-            label="Goal"
-          />
-        </Grid>
-
         <Grid item xs={ 12 } sm={ 6 }>
           <Select
             error={ formik.errors.dietLength as string }
@@ -369,6 +335,20 @@ const DailyTargets = () => {
 
       <Grid container spacing={ 3 }>
 
+        <Grid item xs={ 12 } sm={ 6 }>
+          <Select
+            error={ formik.errors.goal as string }
+            name="goal"
+            { ...formik.getFieldProps( 'goal' ) }
+            options={ [
+              'Lose Weight',
+              'Gain Weight',
+              'Maintenance',
+            ] }
+            label="Goal"
+          />
+        </Grid>
+
         {
           formik.values.goal === 'Lose Weight' && (
             renderWeightLossForm()
@@ -392,7 +372,7 @@ const DailyTargets = () => {
             type="submit"
             variant="contained"
             color="secondary"
-            onClick={ formik.handleSubmit }
+            onClick={ () => formik.handleSubmit() }
           >
             Generate Macro Meal Plan
           </Button>
