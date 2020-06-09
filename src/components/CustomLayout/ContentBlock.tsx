@@ -97,7 +97,7 @@ const ContentBlock = ( {
   )
 
   return (
-    <Grid className={ classes.widthContainer } container xs={ 12 }>
+    <Grid className={ classes.widthContainer } container>
       {
         reverse
           ? (

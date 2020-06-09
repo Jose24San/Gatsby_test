@@ -15,7 +15,9 @@ import { EVENTS, logAnalyticEvent } from "../../redux/reducers/firebaseAnalytics
 
 const useStyles = makeStyles( theme => ( {
   container: {
-    width: '100%'
+    // '@media print': {
+    //   display: 'none',
+    // },
   },
   textField: {
     width: '100%',
@@ -118,13 +120,13 @@ const CalorieTargets = () => {
 
   const mifflenFormik = useFormik( {
     initialValues: {
-      gender: '',
-      age: '',
-      weight: '',
+      gender: 'Male',
+      age: 27,
+      weight: 175,
       activityLevel: '',
       goal: '',
-      feet: '',
-      inches: '',
+      feet: 5,
+      inches: 8,
     },
     validationSchema: Yup.object( {
       gender: Yup.string().required( 'Required' ),
@@ -256,8 +258,9 @@ const CalorieTargets = () => {
     </Fragment>
   )
 
+
   return (
-    <Fragment>
+    <div className={ classes.container }>
       <Typography className={ classes.formHeader } variant="h2">
         Calorie Targets
       </Typography>
@@ -274,7 +277,7 @@ const CalorieTargets = () => {
         <Grid container justify="flex-end">
           <Accordion
             cardStyle={ classes.settingCardContainer }
-            containerStyle={ classes.settingsContainer }
+            containerStyle={ `${ classes.settingsContainer } hide-in-print` }
             data={ [
               {
                 title: 'Advanced Settings',
@@ -296,7 +299,7 @@ const CalorieTargets = () => {
         </Grid>
 
 
-        <Grid item xs={ 12 } sm={ 4 }>
+        <Grid item xs={ 12 } sm={ 4 } className="hide-in-print">
           <Button
             className={ classes.button }
             variant="contained"
@@ -328,7 +331,7 @@ const CalorieTargets = () => {
         }
 
       </Grid>
-    </Fragment>
+    </div>
   );
 };
 

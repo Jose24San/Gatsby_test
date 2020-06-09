@@ -12,6 +12,11 @@ import { EVENTS, logAnalyticEvent } from "../../redux/reducers/firebaseAnalytics
 
 
 const useStyles = makeStyles( theme => ( {
+  container: {
+    '@media print': {
+      marginBottom: 75,
+    },
+  },
   formHeader: {
     fontSize: '2rem',
     fontWeight: 400,
@@ -328,7 +333,7 @@ const DailyTargets = () => {
   };
 
   return (
-    <Fragment>
+    <div className={ classes.container }>
       <Typography variant="h2" className={ classes.formHeader }>
         Daily Targets
       </Typography>
@@ -367,7 +372,7 @@ const DailyTargets = () => {
           )
         }
 
-        <Grid item xs={ 12 } sm={ 4 }>
+        <Grid item xs={ 12 } sm={ 4 } className="hide-in-print">
           <Button
             type="submit"
             variant="contained"
@@ -380,7 +385,7 @@ const DailyTargets = () => {
 
       </Grid>
 
-    </Fragment>
+    </div>
   );
 }
 

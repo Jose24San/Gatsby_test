@@ -7,6 +7,7 @@ import NutritionCard from '../components/Cards/NutritionCard'
 import { useDispatch } from 'react-redux'
 import Paper from '../images/Paper'
 import { openDialog } from '../redux/reducers/dialogs'
+import { EVENTS, logAnalyticEvent } from '../redux/reducers/firebaseAnalytics'
 
 const useStyles = makeStyles( theme => ( {
   cardContainer: {
@@ -33,7 +34,11 @@ const Nutrition = () => {
               'Calorie and Macronutrient break down by day'
             ] }
             iconImage={ <SpoonForkImage/> }
+            onClick={ () => {
+              dispatch( logAnalyticEvent( EVENTS.CLICKED_FREE_MEAL_PLAN ) )
+            } }
             link="nutrition/macroGenerator"
+            linkState={ { type: 'free' } }
           />
         </Grid>
 
@@ -49,7 +54,12 @@ const Nutrition = () => {
               'Grocery list suggestions'
             ] }
             iconImage={ <Paper /> }
-            onClick={ () => dispatch( openDialog( 'subscribe' ) ) }
+            onClick={ () => {
+              dispatch( openDialog( 'subscribe' ) )
+              dispatch( logAnalyticEvent( EVENTS.CLICKED_PAID_MEAL_PLAN ) )
+            } }
+            // link="nutrition/macroGenerator"
+            // linkState={ { type: 'paid' } }
           />
         </Grid>
       </Grid>

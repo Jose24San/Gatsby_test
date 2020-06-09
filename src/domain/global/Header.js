@@ -17,8 +17,6 @@ import { useDispatch } from 'react-redux'
 import { openDialog } from '../../redux/reducers/dialogs'
 import { EVENTS, logAnalyticEvent } from '../../redux/reducers/firebaseAnalytics'
 
-
-
 const useStyles = makeStyles( theme => ( {
   linkContainer: {
     padding: '10px 20px',
@@ -42,6 +40,10 @@ const useStyles = makeStyles( theme => ( {
     backgroundColor: colors.black,
     boxShadow: 'none',
     borderBottom: `1px solid ${ colors.black }`,
+
+    '@media print': {
+      display: 'none',
+    },
   },
   iconContainer: {
     borderBottom: 'none',
@@ -75,7 +77,6 @@ const Header = ( { siteTitle } ) => {
       setAnchorEl( null );
     }
   }
-
 
   return (
     <Location>

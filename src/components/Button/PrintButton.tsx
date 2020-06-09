@@ -11,6 +11,10 @@ const useStyles = makeStyles( theme => ( {
   printSection: {
     marginTop: 40,
     marginBottom: 40,
+
+    '@media print': {
+      display: 'none',
+    },
   },
   container: {
     display: 'flex',

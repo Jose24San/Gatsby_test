@@ -10,12 +10,17 @@ import { setMaintenanceCalories } from "../../redux/reducers/nutrition"
 import Table from "../../components/Table/Table";
 
 const useStyles = makeStyles( theme => ( {
+  Thursday: {
+    '@media print': {
+      marginBottom: 200,
+    },
+  },
   container: {
     marginTop: 40,
   },
   cardContainer: {
     padding: 20,
-    minHeight: 305
+    minHeight: 305,
   },
   formHeader: {
     fontSize: '2rem',
@@ -67,9 +72,14 @@ const DailyCaloriesCards = () => {
       <Grid container spacing={ 3 }>
         {
           calorieInformation.map( item => (
-            <Grid item xs={ 12 } sm={ 6 } key={ item.day }>
+            <Grid
+              item
+              xs={ 12 }
+              sm={ 6 }
+              key={ item.day }
+              className={ classes[ item.day ] }
+            >
               <Paper className={ classes.cardContainer } elevation={ 3 }>
-
                 <Grid container justify="space-between">
                   <Typography className={ classes.formHeader } variant="h2">
                     { item.day }

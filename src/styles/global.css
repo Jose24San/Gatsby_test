@@ -3,3 +3,12 @@
 html, body {
   overflow-x: hidden;
 }
+
+
+@media print {
+
+  .hide-in-print {
+    display: none;
+  }
+
+}

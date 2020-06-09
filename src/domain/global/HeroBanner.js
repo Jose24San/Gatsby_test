@@ -9,6 +9,10 @@ const useStyles = makeStyles( () => ( {
   section: {
     backgroundColor: colors.black,
     borderTop: `1px solid ${ colors.black }`,
+
+    '@media print': {
+      display: 'none',
+    },
   },
   text: {
     color: '#fff',

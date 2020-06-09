@@ -37,6 +37,7 @@ const NutritionCard = ( {
   iconImage,
   iconContainerStyle,
   link,
+  linkState,
   onClick,
   title,
 }: Props ) => {
@@ -48,7 +49,7 @@ const NutritionCard = ( {
       className={ classes.card }
       onClick={ () => {
         if ( onClick ) onClick();
-        if ( link ) navigate( link );
+        if ( link ) navigate( link, { state: linkState } );
       } }
     >
       <Grid container spacing={ 2 }>
@@ -88,6 +89,7 @@ type Props = {
   iconImage: any,
   iconContainerStyle?: object,
   link?: string,
+  linkState?: object,
   onClick?: () => void,
   title: string,
 };

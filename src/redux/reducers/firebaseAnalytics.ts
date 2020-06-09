@@ -16,6 +16,9 @@ export const EVENTS = {
   CREATED_NUTRITION_PLAN_FOR_GAINING_WEIGHT: 'created_nutrition_plan_for_gaining_weight',
 
   PRINTING_NUTRITION_PLAN: 'printing_nutrition_plan',
+
+  CLICKED_FREE_MEAL_PLAN: 'clicked_free_meal_plan',
+  CLICKED_PAID_MEAL_PLAN: 'clicked_paid_meal_plan',
 };
 
 
